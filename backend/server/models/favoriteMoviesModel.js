@@ -1,34 +1,44 @@
 const mongoose = require("mongoose");
-
-//user schema/model
-const newUserSchema = new mongoose.Schema(
+// favorite movies schema/model
+const favoriteMoviesSchema = new mongoose.Schema(
   {
-    title: {
+    Title: {
       type: String,
       required: true,
-      label: "title",
+      label: "Title",
     },
-    year: {
+    Year: {
       type: String,
       required: true,
-      label: "email",
+      label: "Year",
     },
-    id: {
-      required: true,
+    imdbID: {
       type: String,
-      min : 8
+      required: true,
+      label: "imdbID",
     },
-    type: {
+    Type: {
+      type: String,
+      required: true,
+      label: "Type",
+    },
+    Poster: {
+      type: String,
+      required: true,
+      label: "Poster",
+    },
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "users",
+      required: true,
+      label: "User ID",
+    },
+    dateAdded: {
       type: Date,
       default: Date.now,
     },
-    poster: {
-        required: true,
-        type: String,
-        min : 8
-    },
   },
-  { collection: "users" }
+  { collection: "favoriteMovies" }
 );
 
-module.exports = mongoose.model('users', newUserSchema)
+module.exports = mongoose.model("favoriteMovies", favoriteMoviesSchema);
