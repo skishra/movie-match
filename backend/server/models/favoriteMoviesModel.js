@@ -2,27 +2,27 @@ const mongoose = require("mongoose");
 // favorite movies schema/model
 const favoriteMoviesSchema = new mongoose.Schema(
   {
-    Title: {
+    title: {
       type: String,
       required: true,
       label: "Title",
     },
-    Year: {
+    year: {
       type: String,
       required: true,
       label: "Year",
     },
-    imdbID: {
+    id: {
       type: String,
       required: true,
-      label: "imdbID",
+      label: "Movie ID",
     },
-    Type: {
+    type: {
       type: String,
       required: true,
       label: "Type",
     },
-    Poster: {
+    poster: {
       type: String,
       required: true,
       label: "Poster",
