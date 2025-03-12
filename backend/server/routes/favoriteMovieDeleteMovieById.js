@@ -5,7 +5,7 @@ const newFavoriteMovieModel = require("../models/favoriteMoviesModel");
 router.delete(
   "/favoriteMovies/deleteFavoriteMoviesById/:id",
   async (req, res) => {
-    const { id: movieId } = req.params; // Retrieve movieId from URL params
+    const movieId = req.params.id; // Retrieve movieId from URL params
 
     try {
       // Attempt to delete the favorite movie
