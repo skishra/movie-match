@@ -75,3 +75,9 @@ GET http://localhost:8081/favoriteMovies/getAll
 Content-Type: application/json
 
 ###
+GET  http://localhost:8081/favoriteMovies/deleteById/
+Content-Type: application/json 
+
+{
+    "movieId" : "67cbd4f9db2c953730dba126"
+}

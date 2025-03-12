@@ -8,8 +8,9 @@ const getUserByIdRoute = require("./routes/userGetUserById");
 const dbConnection = require("./config/db.config");
 const editUser = require("./routes/userEditUser");
 const deleteUser = require("./routes/userDeleteAll");
-const addFavoriteMovie = require("./routes/addFavoriteMovie");
-const getAllFavoriteMovies = require("./routes/getAllFvoriteMovies");
+const addFavoriteMovie = require("./routes/favoriteMovieCreateMovie");
+const getAllFavoriteMovies = require("./routes/favoriteMoviesGetAll");
+const deleteFavoriteMoviesById = require("./routes/favoriteMovieDeleteMovieById");
 
 require("dotenv").config();
 const SERVER_PORT = 8081;
@@ -25,6 +26,7 @@ app.use("/user", editUser);
 app.use("/user", deleteUser);
 app.use("/favoriteMovies", addFavoriteMovie);
 app.use("/favoriteMovies", getAllFavoriteMovies);
+app.use("/favoriteMovies", deleteFavoriteMoviesById);
 
 app.listen(SERVER_PORT, (req, res) => {
   console.log(
