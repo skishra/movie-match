@@ -4,7 +4,7 @@ const favoriteMoviesModel = require("../models/favoriteMoviesModel");
 const newUserModel = require("../models/userModel");
 
 // PUT route to update a favorite movie
-router.put("/FavoriteMovieUpdate", async (req, res) => {
+router.put("/updateFavoriteMovie", async (req, res) => {
   const { userId, title, year, id, type, poster } = req.body;
 
   // Check if the user exists
