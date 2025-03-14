@@ -75,3 +75,27 @@ Content-Type: application/json
 
 ###
 DELETE  http://localhost:8081/favoriteMovies/deleteFavoriteMoviesById/67cbd4f9db2c953730dba126
+=======
+###
+GET http://localhost:8081/favoriteMovies/getAll
+Content-Type: application/json
+
+###
+PUT http://localhost:8081/updateFavoriteMovie
+Content-Type: application/json 
+
+{
+    "userId" : "67cb2cb6f089a2d609f93ec2",
+    "title": "The Simpsons Movie",
+    "year": "2007",
+    "id": "tt0462538",
+    "type": "movie",
+    "poster": "https://m.media-amazon.com/images/M/MV5BMzIxN2IzOGItOTcyZi00MTkzLWE4ZjktZTdlOWFiYWE4NzlmXkEyXkFqcGc@._V1_SX300.jpg"
+}
+Content-Type: application/json 
+
+{
+    "userId" : "635ab8dfc407faf9f73deaf2",
+    "username" : "Tochi Edit",
+    "password" : "dwwrwr"
+}

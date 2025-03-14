@@ -27,6 +27,9 @@ app.use("/user", deleteUser);
 app.use("/favoriteMovies", addFavoriteMovie);
 app.use("/favoriteMovies", getAllFavoriteMovies);
 app.use("/favoriteMovies", deleteFavoriteMoviesById);
+app.use("/favoriteMovies", require("./routes/FavoriteMovieDeleteMovie"));
+app.use("/favoriteMovies", require("./routes/FavoriteMovieUpdateMovie"));
+
 
 app.listen(SERVER_PORT, (req, res) => {
   console.log(
