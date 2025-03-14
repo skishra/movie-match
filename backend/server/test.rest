@@ -75,7 +75,7 @@ Content-Type: application/json
 
 ###
 DELETE  http://localhost:8081/favoriteMovies/deleteFavoriteMoviesById/67cbd4f9db2c953730dba126
-=======
+
 ###
 GET http://localhost:8081/favoriteMovies/getAll
 Content-Type: application/json
