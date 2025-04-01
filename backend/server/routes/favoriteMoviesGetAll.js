@@ -11,14 +11,14 @@ router.get("/getAll", async (req, res) => {
       query.userId = userId;
     }
 
-    let favoriteMovies = newFavoriteMoviesModel.find(query).sort({ dateAdded: -1 });
+    let movies = newFavoriteMoviesModel.find(query).sort({ dateAdded: -1 });
 
 //applying a limit if provided 
     if (limit && !isNaN(limit) && parseInt(limit) > 0) {
-      favoriteMovies = favoriteMovies.limit(parseInt(limit));
+      movies = movies.limit(parseInt(limit));
     }
 
-    const result = await favoriteMovies;
+    const result = await movies;
     return res.json(result);
   } catch (error) {
     console.error("Error fetching favorite movies:", error);
