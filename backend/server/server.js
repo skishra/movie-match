@@ -12,7 +12,8 @@ const addFavoriteMovie = require("./routes/favoriteMovieCreateMovie");
 const getAllFavoriteMovies = require("./routes/favoriteMoviesGetAll");
 const deleteFavoriteMoviesById = require("./routes/favoriteMovieDeleteMovieById");
 const updateFavoriteMovie = require("./routes/FavoriteMovieUpdateMovie");
-
+const addGenre = require("./routes/genresAddGenre");
+const getAllGenres = require("./routes/genresGetAll");
 
 require("dotenv").config();
 const SERVER_PORT = 8081;
@@ -30,7 +31,8 @@ app.use("/favoriteMovies", addFavoriteMovie);
 app.use("/favoriteMovies", getAllFavoriteMovies);
 app.use("/favoriteMovies", deleteFavoriteMoviesById);
 app.use("/favoriteMovies", updateFavoriteMovie);
-
+app.use("/genres", addGenre);
+app.use("/genres", getAllGenres);
 
 app.listen(SERVER_PORT, (req, res) => {
   console.log(

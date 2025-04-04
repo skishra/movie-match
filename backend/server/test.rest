@@ -101,3 +101,15 @@ Content-Type: application/json
     "type": "movie",
     "poster": "https://m.media-amazon.com/images/M/MV5BMzIxN2IzOGItOTcyZi00MTkzLWE4ZjktZTdlOWFiYWE4NzlmXkEyXkFqcGc@._V1_SX300.jpg"
 }
+
+###
+GET http://localhost:8081/genres/getAll
+Content-Type: application/json
+
+###
+POST http://localhost:8081/genres/addGenre
+Content-Type: application/json 
+
+{
+    "type": "Adventure"
+}
