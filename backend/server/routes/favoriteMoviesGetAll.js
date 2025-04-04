@@ -3,8 +3,28 @@ const router = express.Router();
 const newFavoriteMoviesModel = require("../models/favoriteMoviesModel");
 
 router.get("/getAll", async (req, res) => {
-  const favoriteMovies = await newFavoriteMoviesModel.find();
-  return res.json(favoriteMovies);
+  try {
+    const { userId, limit } = req.query;
+    let query = {};
+//filtering using the userId
+    if (userId) {
+      query.userId = userId;
+    }
+
+    let movies = newFavoriteMoviesModel.find(query).sort({ dateAdded: -1 });
+
+//applying a limit if provided 
+    if (limit && !isNaN(limit) && parseInt(limit) > 0) {
+      movies = movies.limit(parseInt(limit));
+    }
+
+    const result = await movies;
+    return res.json(result);
+  } catch (error) {
+    console.error("Error fetching favorite movies:", error);
+    return res.status(500).json({ message: "Server Error", error: error.message });
+  }
 });
 
 module.exports = router;
+
