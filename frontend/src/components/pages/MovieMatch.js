@@ -11,6 +11,15 @@ const MovieMatch = () => {
       "A jazz musician and an aspiring actress fall in love in Los Angeles.",
   });
 
+  const user = {
+    profilePicture: "https://via.placeholder.com/40", // Replace with actual profile picture URL
+    name: "John Doe",
+  };
+
+  const handleProfileClick = () => {
+    alert("Profile dropdown clicked! Add your functionality here.");
+  };
+
   return (
     <div
       style={{
@@ -20,13 +29,45 @@ const MovieMatch = () => {
         alignItems: "center",
         justifyContent: "center",
         background: "linear-gradient(to bottom, #3a0d0d 70%, #b2310b 30%)",
+        position: "relative",
       }}
     >
+      {/* Profile Picture in Top-Right Corner */}
+      <div
+        style={{
+          position: "absolute",
+          top: "20px",
+          right: "20px",
+          display: "flex",
+          alignItems: "center",
+          cursor: "pointer",
+        }}
+        onClick={handleProfileClick}
+      >
+        <img
+          src={user.profilePicture}
+          alt="Profile"
+          style={{
+            width: "40px",
+            height: "40px",
+            borderRadius: "50%",
+            marginRight: "10px",
+          }}
+        />
+        <span style={{ color: "#fff", fontSize: "14px" }}>{user.name}</span>
+      </div>
+
       {/* Title */}
-      <h1 style={{ color: "#f4c430", fontSize: "3.5rem", marginTop: "1.5rem", fontFamily: "Borel, cursive" }}>
+      <h1
+        style={{
+          color: "#f4c430",
+          fontSize: "3.5rem",
+          marginTop: "1.5rem",
+          fontFamily: "Borel, cursive",
+        }}
+      >
         Movie Match
       </h1>
-
 
       {/* Genre Selection */}
       <select
