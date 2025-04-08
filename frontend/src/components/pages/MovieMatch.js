@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import "../../css/MovieMatch.css";
 
 const MovieMatch = () => {
   const [genre, setGenre] = useState("Horror");
@@ -21,64 +22,21 @@ const MovieMatch = () => {
   };
 
   return (
-    <div
-      style={{
-        minHeight: "100vh",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        background: "linear-gradient(to bottom, #3a0d0d 70%, #b2310b 30%)",
-        position: "relative",
-      }}
-    >
+    <div className="movie-match-container">
       {/* Profile Picture in Top-Right Corner */}
-      <div
-        style={{
-          position: "absolute",
-          top: "20px",
-          right: "20px",
-          display: "flex",
-          alignItems: "center",
-          cursor: "pointer",
-        }}
-        onClick={handleProfileClick}
-      >
-        <img
-          src={user.profilePicture}
-          alt="Profile"
-          style={{
-            width: "40px",
-            height: "40px",
-            borderRadius: "50%",
-            marginRight: "10px",
-          }}
-        />
-        <span style={{ color: "#fff", fontSize: "14px" }}>{user.name}</span>
+      <div className="profile-container" onClick={handleProfileClick}>
+        <img src={user.profilePicture} alt="Profile" />
+        <span>{user.name}</span>
       </div>
 
       {/* Title */}
-      <h1
-        style={{
-          color: "#f4c430",
-          fontSize: "3.5rem",
-          marginTop: "1.5rem",
-          fontFamily: "Borel, cursive",
-        }}
-      >
-        Movie Match
-      </h1>
+      <h1 className="title">Movie Match</h1>
 
       {/* Genre Selection */}
       <select
         value={genre}
         onChange={(e) => setGenre(e.target.value)}
-        style={{
-          padding: "10px",
-          borderRadius: "5px",
-          marginBottom: "20px",
-          fontSize: "16px",
-        }}
+        className="genre-select"
       >
         <option value="Horror">Horror</option>
         <option value="Comedy">Comedy</option>
@@ -87,71 +45,27 @@ const MovieMatch = () => {
       </select>
 
       {/* Movie Card */}
-      <div
-        style={{
-          backgroundColor: "#fff",
-          width: "300px",
-          borderRadius: "10px",
-          overflow: "hidden",
-          textAlign: "center",
-          boxShadow: "0px 4px 10px rgba(0,0,0,0.2)",
-        }}
-      >
-        <img
-          src={movie.image}
-          alt={movie.title}
-          style={{ width: "100%", height: "400px", objectFit: "cover" }}
-        />
-        <div style={{ padding: "15px" }}>
-          <h2 style={{ fontSize: "20px", fontWeight: "bold" }}>
+      <div className="movie-card">
+        <img src={movie.image} alt={movie.title} />
+        <div className="movie-card-content">
+          <h2>
             {movie.title} ({movie.year})
           </h2>
-          <p style={{ color: "#555", fontSize: "14px" }}>{movie.description}</p>
+          <p>{movie.description}</p>
 
           {/* Buttons */}
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              gap: "15px",
-              marginTop: "10px",
-            }}
-          >
+          <div className="button-container">
             {/* Dislike Button */}
-            <button
-              style={{
-                backgroundColor: "red",
-                color: "white",
-                padding: "10px",
-                borderRadius: "50%",
-                border: "none",
-                cursor: "pointer",
-                fontSize: "18px",
-              }}
-            >
-              ❌
-            </button>
+            <button className="btn-dislike">❌</button>
 
             {/* Like Button */}
-            <button
-              style={{
-                backgroundColor: "green",
-                color: "white",
-                padding: "10px",
-                borderRadius: "50%",
-                border: "none",
-                cursor: "pointer",
-                fontSize: "18px",
-              }}
-            >
-              ✅
-            </button>
+            <button className="btn-like">✅</button>
           </div>
         </div>
       </div>
 
       {/* Footer */}
-      <p style={{ color: "#fff", fontSize: "12px", marginTop: "20px" }}>
+      <p className="footer">
         Designed by Yannie - SK - Trevor
       </p>
     </div>
