@@ -57,23 +57,11 @@ Content-Type: application/json
     "year": "2023",
     "id": "tt6718170",
     "type": "movie",
-    "poster": "https://m.media-amazon.com/images/M/MV5BOGZlN2EzOTYtMzUzOS00NTM3LTg0MTQtZDVjZGM4YmJlNWNhXkEyXkFqcGc@._V1_SX300.jpg",
+    "poster": "https://m.media-amazon.com/images/M/MV5BYWUzYWIxMDUtYTdmYS00MjUxLWJjNDItYzcxOTY0N2M2YWE5XkEyXkFqcGc@._V1_SX300.jpg",
+    "genre": "Animation, Adventure, Comedy",
+    "plot": "Brooklyn plumbers Mario and Luigi are warped to the magical Mushroom Kingdom, and Mario must team up with Princess Peach, Toad, and Donkey Kong to save Luigi from the evil Bowser.",
     "userId": "67cb2cb6f089a2d609f93ec2"
 }
-
-###
-POST http://localhost:8081/favoriteMovies/addFavoriteMovie
-Content-Type: application/json 
-
-{
-    "title": "The Super Mario Bros. Movie",
-    "year": "2023",
-    "id": "tt6718170",
-    "type": "movie",
-    "poster": "https://m.media-amazon.com/images/M/MV5BOGZlN2EzOTYtMzUzOS00NTM3LTg0MTQtZDVjZGM4YmJlNWNhXkEyXkFqcGc@._V1_SX300.jpg",
-    "userId": "67cb2cb6f089a2d609f93ec2"
-}
-
 
 ###
 GET http://localhost:8081/favoriteMovies/getAll
@@ -111,5 +99,5 @@ POST http://localhost:8081/genres/addGenre
 Content-Type: application/json 
 
 {
-    "type": "Adventure"
+    "type": "Horror"
 }

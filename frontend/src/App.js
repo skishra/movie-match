@@ -1,8 +1,9 @@
 import React from "react";
 // We use Route in order to define the different routes of our application
 import { Route, Routes } from "react-router-dom";
-import './css/card.css';
-import './index.css';
+import "./css/card.css";
+import "./css/favoriteMovie.css";
+import "./index.css";
 
 // We import all the components we need in our app
 import Navbar from "./components/navbar";
@@ -14,7 +15,7 @@ import PrivateUserProfile from "./components/pages/privateUserProfilePage";
 import { createContext, useState, useEffect } from "react";
 import getUserInfo from "./utilities/decodeJwt";
 import MovieMatch from "./components/pages/MovieMatch";
-
+import FavoriteMovies from "./components/favoriteMovies/favoriteMovies";
 
 export const UserContext = createContext();
 //test change
@@ -37,11 +38,11 @@ const App = () => {
           <Route exact path="/signup" element={<Signup />} />
           <Route path="/privateUserProfile" element={<PrivateUserProfile />} />
           <Route path="/MovieMatch" element={<MovieMatch />} />
+          <Route path="/favoriteMovie" element={<FavoriteMovies />} />
         </Routes>
       </UserContext.Provider>
     </>
   );
 };
 
-
-export default App
+export default App;

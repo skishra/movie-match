@@ -5,7 +5,7 @@ const newUserModel = require("../models/userModel");
 
 // POST route to add a favorite movie
 router.post("/addFavoriteMovie", async (req, res) => {
-  const { userId, title, year, id, type, poster } = req.body;
+  const { userId, title, year, id, type, poster, genre, plot } = req.body;
 
   // Check if the user exists
   const user = await newUserModel.findById(userId);
@@ -24,6 +24,8 @@ router.post("/addFavoriteMovie", async (req, res) => {
     id,
     type,
     poster,
+    genre,
+    plot,
   });
 
   try {

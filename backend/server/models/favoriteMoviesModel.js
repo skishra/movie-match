@@ -27,6 +27,16 @@ const favoriteMoviesSchema = new mongoose.Schema(
       required: true,
       label: "Poster",
     },
+    plot: {
+      type: String,
+      required: true,
+      label: "Plot",
+    },
+    genre: {
+      type: String,
+      required: true,
+      label: "Genre",
+    },
     userId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "users",
