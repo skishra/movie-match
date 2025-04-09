@@ -31,6 +31,16 @@ body {
     color: #f4c430;
     margin-bottom: 20px;
   }
+  
+  .footer {
+    width: 100%;
+    text-align: center;
+    padding: 20px 0;
+    color: #f4c430;
+    font-weight: bold;
+    font-size: 16px;
+    background: transparent; /* matches your gradient background */
+  }
 
   .movie-grid {
     width: 100%;

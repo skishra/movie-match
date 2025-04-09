@@ -1,31 +1,35 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import getUserInfo from '../utilities/decodeJwt';
-import Container from 'react-bootstrap/Container';
-import Nav from 'react-bootstrap/Nav';
-import ReactNavbar from 'react-bootstrap/Navbar';
+import { useEffect, useState } from "react";
+import getUserInfo from "../utilities/decodeJwt";
+import Container from "react-bootstrap/Container";
+import Nav from "react-bootstrap/Nav";
+import ReactNavbar from "react-bootstrap/Navbar";
 import Dropdown from "react-bootstrap/Dropdown";
+import { useNavigate } from "react-router-dom";
 
+// export default function Navbar({ user }) {
+  
 
-export default function Navbar({ user }) {
+//   const handleLogout = () => {
+//     localStorage.removeItem("accessToken");
+//     navigate("/login");
+//   };
+
+// // Here, we display our Navbar
+export default function Navbar() {
+  //   // We are pulling in the user's info but not using it for now.
+  //   // Warning disabled:
+  //   // eslint-disable-next-line
+  const [user, setUser] = useState({});
   const navigate = useNavigate();
-
   const handleLogout = () => {
     localStorage.removeItem("accessToken");
     navigate("/login");
   };
 
-// Here, we display our Navbar
-export default function Navbar() {
-  // We are pulling in the user's info but not using it for now.
-  // Warning disabled: 
-  // eslint-disable-next-line
-  const [user, setUser] = useState({})
-
   useEffect(() => {
-  setUser(getUserInfo())
-  }, [])
-  
+    setUser(getUserInfo());
+  }, []);
+
   // if (!user) return null   - for now, let's show the bar even not logged in.
   // we have an issue with getUserInfo() returning null after a few minutes
   // it seems.

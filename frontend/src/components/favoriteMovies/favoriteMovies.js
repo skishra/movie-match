@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import styles from "../../css/favoriteMovie.module.css";
 
 const FavoriteMovies = ({ userId, limit }) => {
   const [movies, setMovies] = useState([]);
@@ -36,25 +37,25 @@ const FavoriteMovies = ({ userId, limit }) => {
 
   return (
     <div className="result">
-      <div className="page-wrapper">
-        <div className="content-inner">
-          <h1 className="title">My Loves . . .</h1>
+      <div className={styles["page-wrapper"]}>
+        <div className={styles["content-inner"]}>
+          <h1 className={styles["title"]}>My Loves . . .</h1>
           {loading ? (
             <p>Loading favorites...</p>
           ) : movies.length > 0 ? (
-            <div className="movie-grid">
+            <div className={styles["movie-grid"]}>
               {movies.map((movie) => (
-                <div className="movie-card" key={movie._id}>
+                <div className={styles["movie-card"]} key={movie._id}>
                   <img
                     src={movie.poster}
                     alt={movie.title}
-                    className="movie-poster"
+                    className={styles["movie-poster"]}
                   />
-                  <div className="movie-info">
-                    <p className="movie-title">{movie.title}</p>
-                    <p className="movie-plot">{movie.plot}</p>
+                  <div className={styles["movie-info"]}>
+                    <p className={styles["movie-title"]}>{movie.title}</p>
+                    <p className={styles["movie-plot"]}>{movie.plot}</p>
                     <button
-                      className="love-button"
+                      className={styles["love-button"]}
                       onClick={() => {
                         setSelectedMovieId(movie._id);
                         setShowConfirm(true);
@@ -71,16 +72,16 @@ const FavoriteMovies = ({ userId, limit }) => {
           )}
 
           {showConfirm && (
-            <div className="confirm-overlay">
-              <div className="confirm-modal">
+            <div className={styles["confirm-overlay"]}>
+              <div className={styles["confirm-modal"]}>
                 <h2>Confirm Delete</h2>
                 <p>
                   Are you sure you want to remove this movie from your
                   favorites?
                 </p>
-                <div className="confirm-actions">
+                <div className={styles["confirm-actions"]}>
                   <button
-                    className="confirm-yes"
+                    className={styles["confirm-yes"]}
                     onClick={async () => {
                       try {
                         const response = await fetch(
@@ -109,7 +110,7 @@ const FavoriteMovies = ({ userId, limit }) => {
                     Yes
                   </button>
                   <button
-                    className="confirm-no"
+                    className={styles["confirm-no"]}
                     onClick={() => {
                       setShowConfirm(false);
                       setSelectedMovieId(null);
@@ -125,6 +126,9 @@ const FavoriteMovies = ({ userId, limit }) => {
         {/* {"Close content inner "} */}
       </div>
       {/* {" Close page wrapper"} */}
+      <footer className={styles.footer}>
+        Designed by Yannie - SK - Trevor
+      </footer>
     </div> /*{ Close result }*/
   );
 };
