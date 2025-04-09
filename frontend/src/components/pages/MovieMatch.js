@@ -1,19 +1,25 @@
 import React, { useState } from "react";
+import axios from "axios";
 import "../../css/MovieMatch.css";
 
 const MovieMatch = () => {
   const [genre, setGenre] = useState("Horror");
   const [movie, setMovie] = useState({
+    id: "123", // Add unique ID for backend reference
     title: "La La Land",
     year: 2016,
-    image:
+    type: "movie",
+    poster:
       "https://upload.wikimedia.org/wikipedia/en/a/ab/La_La_Land_%28film%29.png",
     description:
       "A jazz musician and an aspiring actress fall in love in Los Angeles.",
   });
+  const [isFavorite, setIsFavorite] = useState(false);
+  const [favoriteMovieId, setFavoriteMovieId] = useState(null); // Store DB _id if saved
 
   const user = {
-    profilePicture: "https://via.placeholder.com/40", // Replace with actual profile picture URL
+    id: "userId123", // Replace with actual user ID
+    profilePicture: "https://via.placeholder.com/40",
     name: "John Doe",
   };
 
@@ -21,18 +27,45 @@ const MovieMatch = () => {
     alert("Profile dropdown clicked! Add your functionality here.");
   };
 
+  const toggleFavorite = async () => {
+    if (!isFavorite) {
+      // Add to favorites
+      try {
+        const res = await axios.post("/favoriteMovies/addFavoriteMovie", {
+          userId: user.id,
+          id: movie.id,
+          title: movie.title,
+          year: movie.year,
+          type: movie.type,
+          poster: movie.poster,
+        });
+        setIsFavorite(true);
+        setFavoriteMovieId(res.data._id); // Save the MongoDB _id for deletion
+      } catch (err) {
+        console.error("Error adding favorite:", err.response?.data || err);
+      }
+    } else {
+      // Remove from favorites
+      try {
+        await axios.delete(`/favoriteMovies/deleteFavoriteMoviesById/${favoriteMovieId}`);
+        setIsFavorite(false);
+        setFavoriteMovieId(null);
+      } catch (err) {
+        console.error("Error removing favorite:", err.response?.data || err);
+      }
+    }
+  };
+
   return (
     <div className="movie-match-container">
-      {/* Profile Picture in Top-Right Corner */}
+      {/* Profile Picture */}
       <div className="profile-container" onClick={handleProfileClick}>
         <img src={user.profilePicture} alt="Profile" />
         <span>{user.name}</span>
       </div>
 
-      {/* Title */}
       <h1 className="title">Movie Match</h1>
 
-      {/* Genre Selection */}
       <select
         value={genre}
         onChange={(e) => setGenre(e.target.value)}
@@ -44,30 +77,32 @@ const MovieMatch = () => {
         <option value="Romance">Romance</option>
       </select>
 
-      {/* Movie Card */}
       <div className="movie-card">
-        <img src={movie.image} alt={movie.title} />
+        <img src={movie.poster} alt={movie.title} />
         <div className="movie-card-content">
           <h2>
             {movie.title} ({movie.year})
           </h2>
           <p>{movie.description}</p>
 
-          {/* Buttons */}
-          <div className="button-container">
-            {/* Dislike Button */}
-            <button className="btn-dislike">❌</button>
+          {/* Favorite Toggle */}
+          <button
+            onClick={toggleFavorite}
+            className="btn-favorite"
+            style={{ fontSize: "1.5rem", background: "none", border: "none", cursor: "pointer" }}
+            title={isFavorite ? "Remove from favorites" : "Add to favorites"}
+          >
+            {isFavorite ? "❤️" : "🤍"}
+          </button>
 
-            {/* Like Button */}
+          <div className="button-container">
+            <button className="btn-dislike">❌</button>
             <button className="btn-like">✅</button>
           </div>
         </div>
       </div>
 
-      {/* Footer */}
-      <p className="footer">
-        Designed by Yannie - SK - Trevor
-      </p>
+      <p className="footer">Designed by Yannie - SK - Trevor</p>
     </div>
   );
 };
