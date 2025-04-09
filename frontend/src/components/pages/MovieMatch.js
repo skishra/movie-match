@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import "../../css/MovieMatch.css";
+import searchOMDb from "../../utilities/searchOMDb"; // Import your searchOMDb function
 
 const MovieMatch = () => {
   const [genre, setGenre] = useState("Horror");
@@ -55,6 +56,14 @@ const MovieMatch = () => {
       }
     }
   };
+
+  searchOMDb('batman')
+  .then(results => {
+    console.log('Search results:', results);
+  })
+  .catch(err => {
+    console.error('Search failed:', err);
+  });
 
   return (
     <div className="movie-match-container">

@@ -38,6 +38,7 @@ export default function Navbar() {
       <Container>
         <Nav className="me-auto">
           <Nav.Link href="/MovieMatch">Movie Match</Nav.Link>
+          <Nav.Link href="/MovieSearch">Movie Search</Nav.Link>
           <Nav.Link href="/home">Home</Nav.Link>
           <Nav.Link href="/favoriteMovie">Favorite Movie </Nav.Link>
         </Nav>

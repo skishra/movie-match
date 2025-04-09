@@ -18,6 +18,8 @@ import ProfilePage from "./components/pages/profilePage";
 import MovieMatch from "./components/pages/MovieMatch";
 import FavoriteMovie from "./components/favoriteMovies/favoriteMovies";
 
+import MovieSearch from "./components/pages/MovieSearch";
+
 export const UserContext = createContext();
 
 const App = () => {
@@ -43,6 +45,7 @@ const App = () => {
           <Route path="/MovieMatch" element={<MovieMatch user={user} />} />
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/favoriteMovie" element={<FavoriteMovie />} />
+          <Route path="/MovieSearch" element={<MovieSearch />} />
         </Routes>
       </UserContext.Provider>
     </>
