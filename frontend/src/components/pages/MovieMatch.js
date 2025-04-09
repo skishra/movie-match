@@ -1,43 +1,75 @@
 import React, { useState } from "react";
+import axios from "axios";
+import "../../css/MovieMatch.css";
 
 const MovieMatch = () => {
   const [genre, setGenre] = useState("Horror");
   const [movie, setMovie] = useState({
+    id: "123", // Add unique ID for backend reference
     title: "La La Land",
     year: 2016,
-    image:
+    type: "movie",
+    poster:
       "https://upload.wikimedia.org/wikipedia/en/a/ab/La_La_Land_%28film%29.png",
     description:
       "A jazz musician and an aspiring actress fall in love in Los Angeles.",
   });
+  const [isFavorite, setIsFavorite] = useState(false);
+  const [favoriteMovieId, setFavoriteMovieId] = useState(null); // Store DB _id if saved
+
+  const user = {
+    id: "userId123", // Replace with actual user ID
+    profilePicture: "https://via.placeholder.com/40",
+    name: "John Doe",
+  };
+
+  const handleProfileClick = () => {
+    alert("Profile dropdown clicked! Add your functionality here.");
+  };
+
+  const toggleFavorite = async () => {
+    if (!isFavorite) {
+      // Add to favorites
+      try {
+        const res = await axios.post("/favoriteMovies/addFavoriteMovie", {
+          userId: user.id,
+          id: movie.id,
+          title: movie.title,
+          year: movie.year,
+          type: movie.type,
+          poster: movie.poster,
+        });
+        setIsFavorite(true);
+        setFavoriteMovieId(res.data._id); // Save the MongoDB _id for deletion
+      } catch (err) {
+        console.error("Error adding favorite:", err.response?.data || err);
+      }
+    } else {
+      // Remove from favorites
+      try {
+        await axios.delete(`/favoriteMovies/deleteFavoriteMoviesById/${favoriteMovieId}`);
+        setIsFavorite(false);
+        setFavoriteMovieId(null);
+      } catch (err) {
+        console.error("Error removing favorite:", err.response?.data || err);
+      }
+    }
+  };
 
   return (
-    <div
-      style={{
-        minHeight: "100vh",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        background: "linear-gradient(to bottom, #3a0d0d 70%, #b2310b 30%)",
-      }}
-    >
-      {/* Title */}
-      <h1 style={{ color: "#f4c430", fontSize: "3.5rem", marginTop: "1.5rem", fontFamily: "Borel, cursive" }}>
-        Movie Match
-      </h1>
+    <div className="movie-match-container">
+      {/* Profile Picture */}
+      <div className="profile-container" onClick={handleProfileClick}>
+        <img src={user.profilePicture} alt="Profile" />
+        <span>{user.name}</span>
+      </div>
 
+      <h1 className="title">Movie Match</h1>
 
-      {/* Genre Selection */}
       <select
         value={genre}
         onChange={(e) => setGenre(e.target.value)}
-        style={{
-          padding: "10px",
-          borderRadius: "5px",
-          marginBottom: "20px",
-          fontSize: "16px",
-        }}
+        className="genre-select"
       >
         <option value="Horror">Horror</option>
         <option value="Comedy">Comedy</option>
@@ -45,74 +77,32 @@ const MovieMatch = () => {
         <option value="Romance">Romance</option>
       </select>
 
-      {/* Movie Card */}
-      <div
-        style={{
-          backgroundColor: "#fff",
-          width: "300px",
-          borderRadius: "10px",
-          overflow: "hidden",
-          textAlign: "center",
-          boxShadow: "0px 4px 10px rgba(0,0,0,0.2)",
-        }}
-      >
-        <img
-          src={movie.image}
-          alt={movie.title}
-          style={{ width: "100%", height: "400px", objectFit: "cover" }}
-        />
-        <div style={{ padding: "15px" }}>
-          <h2 style={{ fontSize: "20px", fontWeight: "bold" }}>
+      <div className="movie-card">
+        <img src={movie.poster} alt={movie.title} />
+        <div className="movie-card-content">
+          <h2>
             {movie.title} ({movie.year})
           </h2>
-          <p style={{ color: "#555", fontSize: "14px" }}>{movie.description}</p>
+          <p>{movie.description}</p>
 
-          {/* Buttons */}
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              gap: "15px",
-              marginTop: "10px",
-            }}
+          {/* Favorite Toggle */}
+          <button
+            onClick={toggleFavorite}
+            className="btn-favorite"
+            style={{ fontSize: "1.5rem", background: "none", border: "none", cursor: "pointer" }}
+            title={isFavorite ? "Remove from favorites" : "Add to favorites"}
           >
-            {/* Dislike Button */}
-            <button
-              style={{
-                backgroundColor: "red",
-                color: "white",
-                padding: "10px",
-                borderRadius: "50%",
-                border: "none",
-                cursor: "pointer",
-                fontSize: "18px",
-              }}
-            >
-              ❌
-            </button>
+            {isFavorite ? "❤️" : "🤍"}
+          </button>
 
-            {/* Like Button */}
-            <button
-              style={{
-                backgroundColor: "green",
-                color: "white",
-                padding: "10px",
-                borderRadius: "50%",
-                border: "none",
-                cursor: "pointer",
-                fontSize: "18px",
-              }}
-            >
-              ✅
-            </button>
+          <div className="button-container">
+            <button className="btn-dislike">❌</button>
+            <button className="btn-like">✅</button>
           </div>
         </div>
       </div>
 
-      {/* Footer */}
-      <p style={{ color: "#fff", fontSize: "12px", marginTop: "20px" }}>
-        Designed by Yannie - SK - Trevor
-      </p>
+      <p className="footer">Designed by Yannie - SK - Trevor</p>
     </div>
   );
 };
