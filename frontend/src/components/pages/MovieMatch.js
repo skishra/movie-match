@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import "../../css/MovieMatch.css";
+import { getUserInfo } from "../../utilities/jwt"; // Import your JWT utilit
 import searchOMDb from "../../utilities/searchOMDb"; // Import your searchOMDb function
 
 const MovieMatch = () => {
