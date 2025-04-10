@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
-import getUserInfo from "../../utilities/decodeJwt";
+import "../../css/MovieMatch.css";
+import searchOMDb from "../../utilities/searchOMDb"; // Import your searchOMDb function
 
 const MovieMatch = () => {
   const [genre, setGenre] = useState("Horror");
@@ -50,6 +51,14 @@ const MovieMatch = () => {
       console.error("Favorite toggle error:", err.response?.data || err);
     }
   };
+
+  searchOMDb('batman')
+  .then(results => {
+    console.log('Search results:', results);
+  })
+  .catch(err => {
+    console.error('Search failed:', err);
+  });
 
   return (
     <div

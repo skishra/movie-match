@@ -34,12 +34,10 @@ export default function Navbar() {
       <Container>
         {/* Left-side nav links */}
         <Nav className="me-auto">
-          <Nav.Link href="/MovieMatch" style={{ color: "white" }}>
-            Movie Match
-          </Nav.Link>
-          <Nav.Link href="/favoriteMovie" style={{ color: "white" }}>
-            Favorite Movie
-          </Nav.Link>
+          <Nav.Link href="/MovieMatch">Movie Match</Nav.Link>
+          <Nav.Link href="/MovieSearch">Movie Search</Nav.Link>
+          <Nav.Link href="/home">Home</Nav.Link>
+          <Nav.Link href="/favoriteMovie">Favorite Movie </Nav.Link>
         </Nav>
 
         {/* Right-side: Profile or Login */}
