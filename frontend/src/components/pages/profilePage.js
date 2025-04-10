@@ -5,9 +5,6 @@ const ProfilePage = () => {
   const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(true); // Simulate login state
   const [profile, setProfile] = useState({
-    email: "user@example.com", // Replace with actual user data
-    name: "John Doe",
-    profilePicture: "https://randomuser.me/api/portraits/men/75.jpg", // Default profile picture
   });
   const [isDropdownVisible, setIsDropdownVisible] = useState(false); // Toggle dropdown visibility
 
