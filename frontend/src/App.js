@@ -10,6 +10,8 @@ import ProfilePage from "./components/pages/profilePage";
 import MovieMatch from "./components/pages/MovieMatch";
 import FavoriteMovie from "./components/favoriteMovies/favoriteMovies";
 import getUserInfo from "./utilities/decodeJwt";
+import UpdateProfile from "./components/pages/updateProfile";
+
 
 import MovieSearch from "./components/pages/MovieSearch";
 
@@ -39,6 +41,7 @@ const App = () => {
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/favoriteMovie" element={<FavoriteMovie />} />
           <Route path="/MovieSearch" element={<MovieSearch />} />
+          <Route path="/updateProfile"element={<UpdateProfile/>}/>
         </Routes>
       </UserContext.Provider>
     </>
