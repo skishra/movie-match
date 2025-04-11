@@ -48,7 +48,7 @@ const Login = () => {
       const { accessToken } = res;
       localStorage.setItem("accessToken", accessToken);
       setError("");
-      navigate("/MovieMatch");
+      navigate("/MovieSearch");
     } catch (error) {
       if (
         error.response &&
