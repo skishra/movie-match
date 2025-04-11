@@ -4,54 +4,45 @@ import axios from "axios";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 
-const PRIMARY_COLOR = "#cc5c99";
-const SECONDARY_COLOR = "#0c0c1f";
+const PRIMARY_COLOR = "#f4c430";
+const SECONDARY_COLOR = "#3a0d0d";
 const url = `${process.env.REACT_APP_BACKEND_SERVER_URI}/user/signup`;
 
 const Register = () => {
   const [data, setData] = useState({ username: "", email: "", password: "" });
   const [error, setError] = useState("");
-  const navigate = useNavigate();
   const [light, setLight] = useState(false);
   const [bgColor, setBgColor] = useState(SECONDARY_COLOR);
   const [bgText, setBgText] = useState("Light Mode");
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (light) {
+      setBgColor("white");
+      setBgText("Dark Mode");
+    } else {
+      setBgColor(SECONDARY_COLOR);
+      setBgText("Light Mode");
+    }
+  }, [light]);
 
   const handleChange = ({ currentTarget: input }) => {
     setData({ ...data, [input.name]: input.value });
   };
 
-  useEffect(() => {
-    if (light) {
-      setBgColor("white");
-      setBgText("Dark mode");
-    } else {
-      setBgColor(SECONDARY_COLOR);
-      setBgText("Light mode");
-    }
-  }, [light]);
-
-  let labelStyling = {
-    color: PRIMARY_COLOR,
-    fontWeight: "bold",
-    textDecoration: "none",
-  };
-  let backgroundStyling = { background: bgColor };
-  let buttonStyling = {
-    background: PRIMARY_COLOR,
-    borderStyle: "none",
-    color: bgColor,
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!data.username || !data.email || !data.password) {
+      setError("Please fill in all fields.");
+      return;
+    }
+
     try {
       const { data: res } = await axios.post(url, data);
       const { accessToken } = res;
 
-      // Show confirmation window
       window.alert("Registration successful! Please log in.");
-      
-      // Navigate to the login page
       navigate("/login");
     } catch (error) {
       if (
@@ -60,89 +51,103 @@ const Register = () => {
         error.response.status <= 500
       ) {
         setError(error.response.data.message);
+      } else {
+        setError("Something went wrong. Please try again.");
       }
     }
   };
 
   return (
-    <>
-      <section className="vh-100">
-        <div className="container-fluid h-custom vh-100">
-          <div
-            className="row d-flex justify-content-center align-items-center h-100 "
-            style={backgroundStyling}
-          >
-            <div className="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
-              <Form>
-                <Form.Group className="mb-3" controlId="formBasicEmail">
-                  <Form.Label style={labelStyling}>Username</Form.Label>
-                  <Form.Control
-                    type="username"
-                    name="username"
-                    onChange={handleChange}
-                    placeholder="Enter username"
-                  />
-                  <Form.Text className="text-muted">
-                    We just might sell your data
-                  </Form.Text>
-                </Form.Group>
-                <Form.Group className="mb-3" controlId="formBasicEmail">
-                  <Form.Label style={labelStyling}>Email</Form.Label>
-                  <Form.Control
-                    type="email"
-                    name="email"
-                    onChange={handleChange}
-                    placeholder="Enter Email Please"
-                  />
-                  <Form.Text className="text-muted">
-                    We just might sell your data
-                  </Form.Text>
-                </Form.Group>
-                <Form.Group className="mb-3" controlId="formBasicPassword">
-                  <Form.Label style={labelStyling}>Password</Form.Label>
-                  <Form.Control
-                    type="password"
-                    name="password"
-                    placeholder="Password"
-                    onChange={handleChange}
-                  />
-                </Form.Group>
-                <div className="form-check form-switch">
-                  <input
-                    className="form-check-input"
-                    type="checkbox"
-                    id="flexSwitchCheckDefault"
-                    onChange={() => {
-                      setLight(!light);
-                    }}
-                  />
-                  <label
-                    className="form-check-label text-muted"
-                    htmlFor="flexSwitchCheckDefault"
-                  >
-                    {bgText}
-                  </label>
-                </div>
-                {error && (
-                  <div style={labelStyling} className="pt-3">
-                    {error}
-                  </div>
-                )}
-                <Button
-                  variant="primary"
-                  type="submit"
-                  onClick={handleSubmit}
-                  style={buttonStyling}
-                  className="mt-2"
-                >
-                  Register
-                </Button>
-              </Form>
-            </div>
+    <section
+      className="vh-100 d-flex align-items-center justify-content-center"
+      style={{ backgroundColor: bgColor }}
+    >
+      <div
+        className="p-5 rounded-4 shadow-lg"
+        style={{
+          width: "100%",
+          maxWidth: "450px",
+          backgroundColor: light ? "#f8f9fa" : "#1e1e1e",
+        }}
+      >
+        <h2
+          className="text-center mb-4"
+          style={{ color: PRIMARY_COLOR, fontWeight: "bold" }}
+        >
+          Create an Account 🎟️
+        </h2>
+        <Form onSubmit={handleSubmit}>
+          <Form.Group className="mb-3" controlId="formUsername">
+            <Form.Label style={{ color: PRIMARY_COLOR }}>Username</Form.Label>
+            <Form.Control
+              type="text"
+              name="username"
+              placeholder="Enter username"
+              value={data.username}
+              onChange={handleChange}
+              style={{ borderRadius: "10px" }}
+            />
+          </Form.Group>
+
+          <Form.Group className="mb-3" controlId="formEmail">
+            <Form.Label style={{ color: PRIMARY_COLOR }}>Email</Form.Label>
+            <Form.Control
+              type="email"
+              name="email"
+              placeholder="Enter email"
+              value={data.email}
+              onChange={handleChange}
+              style={{ borderRadius: "10px" }}
+            />
+          </Form.Group>
+
+          <Form.Group className="mb-3" controlId="formPassword">
+            <Form.Label style={{ color: PRIMARY_COLOR }}>Password</Form.Label>
+            <Form.Control
+              type="password"
+              name="password"
+              placeholder="Enter password"
+              value={data.password}
+              onChange={handleChange}
+              style={{ borderRadius: "10px" }}
+            />
+          </Form.Group>
+
+          <div className="mb-3">
+            <Form.Check
+              type="switch"
+              id="theme-switch"
+              label={bgText}
+              onChange={() => setLight(!light)}
+              style={{ color: light ? "#000" : "#ccc" }}
+            />
           </div>
-        </div>
-      </section>
-    </>
+
+          {error && (
+            <div className="text-danger text-center mb-3" style={{ fontWeight: "bold" }}>
+              {error}
+            </div>
+          )}
+
+          <Button
+            type="submit"
+            style={{
+              width: "100%",
+              backgroundColor: PRIMARY_COLOR,
+              border: "none",
+              color: bgColor,
+              fontWeight: "bold",
+              borderRadius: "20px",
+              transition: "0.3s ease",
+            }}
+            onMouseEnter={(e) => (e.target.style.transform = "scale(1.05)")}
+            onMouseLeave={(e) => (e.target.style.transform = "scale(1)")}
+          >
+            Register
+          </Button>
+        </Form>
+      </div>
+    </section>
   );
 };
 
