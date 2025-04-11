@@ -24,12 +24,8 @@ export default function Navbar() {
 
   return (
     <ReactNavbar
-      bg="dark"
+      bg="#3a0d0d"
       variant="dark"
-      style={{
-        backgroundColor: "#3a0d0d", // Match MovieMatch background
-        borderBottom: "2px solid #b2310b", // Optional: Add a border for styling
-      }}
     >
       <Container>
         {/* Left-side nav links */}
@@ -73,7 +69,6 @@ export default function Navbar() {
                   fontWeight: "bold",
                 }}
               >
-                ▼
               </Dropdown.Toggle>
               <Dropdown.Menu>
                 <Dropdown.Item onClick={() => navigate("/profile")}>
