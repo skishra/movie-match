@@ -35,9 +35,6 @@ export default function Navbar() {
           <Nav.Link as={Link} to="/MovieSearch" style={{ color: "white" }}>
             Movie Search
           </Nav.Link>
-          <Nav.Link as={Link} to="/home" style={{ color: "white" }}>
-            Home
-          </Nav.Link>
           <Nav.Link as={Link} to="/favoriteMovie" style={{ color: "white" }}>
             Favorite Movie
           </Nav.Link>
