@@ -4,39 +4,48 @@ import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import ReactNavbar from "react-bootstrap/Navbar";
 import Dropdown from "react-bootstrap/Dropdown";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link, useLocation } from "react-router-dom";
 
 export default function Navbar() {
-  const [user, setUser] = useState(null); // Track logged-in user
+  const [user, setUser] = useState(null);
   const navigate = useNavigate();
+  const location = useLocation(); // To react to route changes
 
-  // Fetch user info on component mount
+  // Update user state when location or token changes
   useEffect(() => {
-    const fetchedUser = getUserInfo();
-    setUser(fetchedUser); // Set user state
-  }, []);
+    const token = localStorage.getItem("accessToken");
+    if (token) {
+      const fetchedUser = getUserInfo();
+      setUser(fetchedUser);
+    } else {
+      setUser(null);
+    }
+  }, [location]); // Runs every time route changes
 
   const handleLogout = () => {
     localStorage.removeItem("accessToken");
-    setUser(null); // Reset user state
+    setUser(null);
     navigate("/login");
   };
 
   return (
-    <ReactNavbar
-      bg="#3a0d0d"
-      variant="dark"
-    >
+    <ReactNavbar bg="#3a0d0d" variant="dark">
       <Container>
-        {/* Left-side nav links */}
         <Nav className="me-auto">
-          <Nav.Link href="/MovieMatch">Movie Match</Nav.Link>
-          <Nav.Link href="/MovieSearch">Movie Search</Nav.Link>
-          <Nav.Link href="/home">Home</Nav.Link>
-          <Nav.Link href="/favoriteMovie">Favorite Movie </Nav.Link>
+          <Nav.Link as={Link} to="/MovieMatch" style={{ color: "white" }}>
+            Movie Match
+          </Nav.Link>
+          <Nav.Link as={Link} to="/MovieSearch" style={{ color: "white" }}>
+            Movie Search
+          </Nav.Link>
+          <Nav.Link as={Link} to="/home" style={{ color: "white" }}>
+            Home
+          </Nav.Link>
+          <Nav.Link as={Link} to="/favoriteMovie" style={{ color: "white" }}>
+            Favorite Movie
+          </Nav.Link>
         </Nav>
 
-        {/* Right-side: Profile or Login */}
         {user ? (
           <div style={{ display: "inline-flex", alignItems: "center" }}>
             <img
@@ -54,7 +63,7 @@ export default function Navbar() {
               }}
             />
             <span style={{ color: "white", fontWeight: "bold" }}>
-              {user.username || "User"} {/* Display username */}
+              {user.username || "User"}
             </span>
             <Dropdown align="end">
               <Dropdown.Toggle
@@ -68,8 +77,7 @@ export default function Navbar() {
                   color: "white",
                   fontWeight: "bold",
                 }}
-              >
-              </Dropdown.Toggle>
+              ></Dropdown.Toggle>
               <Dropdown.Menu>
                 <Dropdown.Item onClick={() => navigate("/profile")}>
                   Profile
@@ -96,9 +104,10 @@ export default function Navbar() {
             />
             <span style={{ color: "white", fontWeight: "bold" }}>Guest</span>
             <Nav.Link
-              href="/login"
+              as={Link}
+              to="/login"
               style={{
-                backgroundColor: "#b2310b", // Match the MovieMatch color scheme
+                backgroundColor: "#b2310b",
                 color: "white",
                 padding: "10px 20px",
                 borderRadius: "25px",
@@ -106,17 +115,17 @@ export default function Navbar() {
                 border: "2px solid white",
                 marginLeft: "10px",
                 transition: "all 0.3s ease-in-out",
-                boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.2)", // Add a subtle shadow
+                boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.2)",
               }}
               onMouseEnter={(e) => {
-                e.target.style.backgroundColor = "#3a0d0d"; // Darker hover effect
-                e.target.style.color = "#f4c430"; // Add a golden hover text color
-                e.target.style.transform = "scale(1.05)"; // Slightly enlarge on hover
+                e.target.style.backgroundColor = "#3a0d0d";
+                e.target.style.color = "#f4c430";
+                e.target.style.transform = "scale(1.05)";
               }}
               onMouseLeave={(e) => {
-                e.target.style.backgroundColor = "#b2310b"; // Reset background color
-                e.target.style.color = "white"; // Reset text color
-                e.target.style.transform = "scale(1)"; // Reset size
+                e.target.style.backgroundColor = "#b2310b";
+                e.target.style.color = "white";
+                e.target.style.transform = "scale(1)";
               }}
             >
               Login / Sign Up
