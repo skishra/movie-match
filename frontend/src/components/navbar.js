@@ -32,9 +32,6 @@ export default function Navbar() {
     <ReactNavbar bg="#3a0d0d" variant="dark">
       <Container>
         <Nav className="me-auto">
-          <Nav.Link as={Link} to="/MovieMatch" style={{ color: "white" }}>
-            Movie Match
-          </Nav.Link>
           <Nav.Link as={Link} to="/MovieSearch" style={{ color: "white" }}>
             Movie Search
           </Nav.Link>

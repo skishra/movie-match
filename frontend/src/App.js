@@ -29,7 +29,7 @@ const App = () => {
       <Navbar user={user} />
       <UserContext.Provider value={user}>
         <Routes>
-          <Route exact path="/" element={<MovieMatch />} />
+          <Route exact path="/" element={<MovieSearch />} />
           {/*<Route exact path="/" element={<LandingPage />} />*/}
           <Route exact path="/home" element={<HomePage />} />
           <Route exact path="/login" element={<Login />} />
