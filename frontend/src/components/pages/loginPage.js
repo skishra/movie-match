@@ -5,8 +5,8 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import getUserInfo from "../../utilities/decodeJwt";
 
-const PRIMARY_COLOR = "#cc5c99";
-const SECONDARY_COLOR = '#0c0c1f'
+const PRIMARY_COLOR = "#f4c430";
+const SECONDARY_COLOR = '#3a0d0d'
 const url = `${process.env.REACT_APP_BACKEND_SERVER_URI}/user/login`;
 
 const Login = () => {
@@ -55,7 +55,7 @@ const Login = () => {
       const { accessToken } = res;
       //store token in localStorage
       localStorage.setItem("accessToken", accessToken);
-      navigate("/home");
+      navigate("/MovieMatch");
     } catch (error) {
       if (
         error.response &&
@@ -68,7 +68,7 @@ const Login = () => {
   };
 
   if(user) {
-    navigate('/home')
+    navigate('/MovieMatch')
     return
   }
 
