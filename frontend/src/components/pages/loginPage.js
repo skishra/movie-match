@@ -6,55 +6,48 @@ import Form from "react-bootstrap/Form";
 import getUserInfo from "../../utilities/decodeJwt";
 
 const PRIMARY_COLOR = "#f4c430";
-const SECONDARY_COLOR = '#3a0d0d'
+const SECONDARY_COLOR = "#3a0d0d";
 const url = `${process.env.REACT_APP_BACKEND_SERVER_URI}/user/login`;
 
 const Login = () => {
-  const [user, setUser] = useState(null)
+  const [user, setUser] = useState(null);
   const [data, setData] = useState({ username: "", password: "" });
   const [error, setError] = useState("");
   const [light, setLight] = useState(false);
   const [bgColor, setBgColor] = useState(SECONDARY_COLOR);
-  const [bgText, setBgText] = useState('Light Mode')
+  const [bgText, setBgText] = useState("Light Mode");
   const navigate = useNavigate();
 
-  let labelStyling = {
-    color: PRIMARY_COLOR,
-    fontWeight: "bold",
-    textDecoration: "none",
-  };
-  let backgroundStyling = { background: bgColor };
-  let buttonStyling = {
-    background: PRIMARY_COLOR,
-    borderStyle: "none",
-    color: bgColor,
-  };
+  useEffect(() => {
+    const obj = getUserInfo();
+    setUser(obj);
+
+    if (light) {
+      setBgColor("white");
+      setBgText("Dark Mode");
+    } else {
+      setBgColor(SECONDARY_COLOR);
+      setBgText("Light Mode");
+    }
+  }, [light]);
 
   const handleChange = ({ currentTarget: input }) => {
     setData({ ...data, [input.name]: input.value });
   };
 
-  useEffect(() => {
-
-    const obj = getUserInfo(user)
-    setUser(obj)
-
-    if (light) {
-      setBgColor("white");
-      setBgText('Dark mode')
-    } else {
-      setBgColor(SECONDARY_COLOR);
-      setBgText('Light mode')
-    }
-  }, [light]);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!data.username || !data.password) {
+      setError("Please enter both username and password.");
+      return;
+    }
+
     try {
       const { data: res } = await axios.post(url, data);
       const { accessToken } = res;
-      //store token in localStorage
       localStorage.setItem("accessToken", accessToken);
+      setError("");
       navigate("/MovieMatch");
     } catch (error) {
       if (
@@ -63,81 +56,103 @@ const Login = () => {
         error.response.status <= 500
       ) {
         setError(error.response.data.message);
+      } else {
+        setError("Something went wrong. Please try again.");
       }
     }
   };
 
-  if(user) {
-    navigate('/MovieMatch')
-    return
+  if (user) {
+    navigate("/MovieMatch");
+    return null;
   }
 
   return (
-    <>
-      <section className="vh-100">
-        <div className="container-fluid h-custom vh-100">
-          <div
-            className="row d-flex justify-content-center align-items-center h-100 "
-            style={backgroundStyling}>
-            <div className="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
-              <Form>
-                <Form.Group className="mb-3" controlId="formBasicEmail">
-                  <Form.Label style={labelStyling}>Username</Form.Label>
-                  <Form.Control
-                    type="username"
-                    name="username"
-                    onChange={handleChange}
-                    placeholder="Enter username"
-                  />
-                  <Form.Text className="text-muted">
-                    We just might sell your data
-                  </Form.Text>
-                </Form.Group>
-                <Form.Group className="mb-3" controlId="formBasicPassword">
-                  <Form.Label style={labelStyling}>Password</Form.Label>
-                  <Form.Control
-                    type="password"
-                    name="password"
-                    placeholder="Password"
-                    onChange={handleChange}
-                  />
-                </Form.Group>
-                <Form.Group className="mb-3" controlId="formBasicCheckbox">
-                  <Form.Text className="text-muted pt-1">
-                    Dont have an account?
-                    <span>
-                      <Link to="/signup" style={labelStyling}> Sign up
-                      </Link>
-                    </span>
-                  </Form.Text>
-                </Form.Group>
-                <div class="form-check form-switch">
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    id="flexSwitchCheckDefault"
-                    onChange={() => { setLight(!light) }}
-                  />
-                  <label class="form-check-label" for="flexSwitchCheckDefault" className='text-muted'>
-                    {bgText}
-                  </label>
-                </div>
-                {error && <div style={labelStyling} className='pt-3'>{error}</div>}
-                <Button
-                  variant="primary"
-                  type="submit"
-                  onClick={handleSubmit}
-                  style={buttonStyling}
-                  className='mt-2'
-                >
-                  Log In
-                </Button>
-              </Form>
-            </div>
+    <section
+      className="vh-100 d-flex align-items-center justify-content-center"
+      style={{ backgroundColor: bgColor }}
+    >
+      <div
+        className="p-5 rounded-4 shadow-lg"
+        style={{
+          width: "100%",
+          maxWidth: "450px",
+          backgroundColor: light ? "#f8f9fa" : "#1e1e1e",
+        }}
+      >
+        <h2
+          className="text-center mb-4"
+          style={{ color: PRIMARY_COLOR, fontWeight: "bold" }}
+        >
+          Welcome Back 🎬
+        </h2>
+        <Form onSubmit={handleSubmit}>
+          <Form.Group className="mb-3" controlId="formUsername">
+            <Form.Label style={{ color: PRIMARY_COLOR }}>Username</Form.Label>
+            <Form.Control
+              type="text"
+              name="username"
+              placeholder="Enter username"
+              value={data.username}
+              onChange={handleChange}
+              style={{ borderRadius: "10px" }}
+            />
+          </Form.Group>
+
+          <Form.Group className="mb-3" controlId="formPassword">
+            <Form.Label style={{ color: PRIMARY_COLOR }}>Password</Form.Label>
+            <Form.Control
+              type="password"
+              name="password"
+              placeholder="Enter password"
+              value={data.password}
+              onChange={handleChange}
+              style={{ borderRadius: "10px" }}
+            />
+          </Form.Group>
+
+          <div className="mb-3">
+            <Form.Check
+              type="switch"
+              id="custom-switch"
+              label={bgText}
+              onChange={() => setLight(!light)}
+              style={{ color: light ? "#000" : "#ccc" }}
+            />
           </div>
-        </div>
-      </section>
-    </>
+
+          {error && (
+            <div className="text-danger text-center mb-3" style={{ fontWeight: "bold" }}>
+              {error}
+            </div>
+          )}
+
+          <Button
+            type="submit"
+            style={{
+              width: "100%",
+              backgroundColor: PRIMARY_COLOR,
+              border: "none",
+              color: bgColor,
+              fontWeight: "bold",
+              borderRadius: "20px",
+              transition: "0.3s ease",
+            }}
+            onMouseEnter={(e) => (e.target.style.transform = "scale(1.05)")}
+            onMouseLeave={(e) => (e.target.style.transform = "scale(1)")}
+          >
+            Log In
+          </Button>
+        </Form>
+
+        <p className="text-center mt-4" style={{ color: light ? "#000" : "#ccc" }}>
+          Don’t have an account?
+          <Link to="/signup" style={{ color: PRIMARY_COLOR, marginLeft: "5px" }}>
+            Sign up
+          </Link>
+        </p>
+      </div>
+    </section>
   );
 };
 
