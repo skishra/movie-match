@@ -10,9 +10,15 @@ const MovieSearch = () => {
 
   const handleSearch = async (e) => {
     e.preventDefault();
+    setErrorMsg(""); // clear previous error
+  
+    if (query.trim().length < 3) {
+      setErrorMsg("Please enter at least 3 characters.");
+      return;
+    }
+  
     setLoading(true);
-    setErrorMsg("");
-
+  
     try {
       const movies = await searchOMDb(query);
       setResults(movies);
@@ -32,7 +38,7 @@ const MovieSearch = () => {
         <form onSubmit={handleSearch} style={{ width: "100%", marginBottom: "20px" }}>
           <input
             type="text"
-            placeholder="Search for a movie..."
+            placeholder="Search for a movie"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             style={{
