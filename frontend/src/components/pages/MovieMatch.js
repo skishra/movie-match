@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import "../../css/MovieMatch.css";
 import getUserInfo from "../../utilities/decodeJwt";
-import searchOMDb from "../../utilities/searchOMDb"; // Import your searchOMDb function
+import searchOMDb from "../../utilities/searchTMDb"; // Import your searchOMDb function
 
 const MovieMatch = () => {
   const [genre, setGenre] = useState("Horror");

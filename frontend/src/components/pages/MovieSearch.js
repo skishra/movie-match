@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styles from "../../css/favoriteMovie.module.css"; // Uses your existing CSS file
-import searchOMDb from "../../utilities/searchOMDb"; // Adjust path based on where you define the function
+import searchTMDb from "../../utilities/searchTMDb"; // Adjust path based on where you define the function
 
 const MovieSearch = () => {
   const [query, setQuery] = useState("");
@@ -10,17 +10,11 @@ const MovieSearch = () => {
 
   const handleSearch = async (e) => {
     e.preventDefault();
-    setErrorMsg(""); // clear previous error
-  
-    if (query.trim().length < 3) {
-      setErrorMsg("Please enter at least 3 characters.");
-      return;
-    }
-  
     setLoading(true);
-  
+    setErrorMsg("");
+
     try {
-      const movies = await searchOMDb(query);
+      const movies = await searchTMDb(query);
       setResults(movies);
     } catch (error) {
       setErrorMsg("Something went wrong. Try again.");
@@ -38,7 +32,7 @@ const MovieSearch = () => {
         <form onSubmit={handleSearch} style={{ width: "100%", marginBottom: "20px" }}>
           <input
             type="text"
-            placeholder="Search for a movie"
+            placeholder="Search for a movie..."
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             style={{
@@ -73,19 +67,20 @@ const MovieSearch = () => {
         {results.length > 0 && (
           <div className={styles["movie-grid"]}>
             {results.map((movie) => (
-              <div className={styles["movie-card"]} key={movie.imdbID}>
+              <div className={styles["movie-card"]} key={movie.id}>
                 <img
-                  src={movie.Poster !== "N/A" ? movie.Poster : "/placeholder.jpg"}
-                  alt={movie.Title}
+                  src={movie.poster}
+                  alt={movie.title}
                   className={styles["movie-poster"]}
                 />
                 <div className={styles["movie-info"]}>
-                  <p className={styles["movie-title"]}>{movie.Title}</p>
-                  <p className={styles["movie-plot"]}>Year: {movie.Year}</p>
+                  <p className={styles["movie-title"]}>{movie.title}</p>
+                  <p className={styles["movie-plot"]}>Year: {movie.year}</p>
                   <button className={styles["love-button"]}>+</button>
                 </div>
               </div>
             ))}
+
           </div>
         )}
       </div>
