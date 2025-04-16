@@ -19,6 +19,7 @@ export default async function searchTMDb(searchTerm) {
         id: movie.id,
         title: movie.title,
         year: movie.release_date?.split("-")[0] || "N/A",
+        overview: movie.overview,
         poster: movie.poster_path
           ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
           : "/placeholder.jpg"
