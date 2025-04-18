@@ -7,6 +7,8 @@ const FavoriteMovies = ({ userId, limit }) => {
   const [loading, setLoading] = useState(true);
   const [showConfirm, setShowConfirm] = useState(false);
   const [selectedMovieId, setSelectedMovieId] = useState(null);
+  const [showDetail, setShowDetail] = useState(false);
+  const [selectedMovie, setSelectedMovie] = useState(null);
 
   useEffect(() => {
     const fetchFavoriteMovies = async () => {
@@ -32,6 +34,19 @@ const FavoriteMovies = ({ userId, limit }) => {
     fetchFavoriteMovies();
   }, [userId, limit]);
 
+  useEffect(() => {
+    const handleEsc = (e) => {
+      if (e.key === "Escape") {
+        setShowDetail(false);
+      }
+    };
+
+    document.addEventListener("keydown", handleEsc);
+    return () => {
+      document.removeEventListener("keydown", handleEsc);
+    };
+  }, []);
+
   if (loading) return <p>Loading...</p>;
   if (movies.length === 0) return <p>No favorite movies found.</p>;
 
@@ -45,7 +60,14 @@ const FavoriteMovies = ({ userId, limit }) => {
           ) : movies.length > 0 ? (
             <div className={styles["movie-grid"]}>
               {movies.map((movie) => (
-                <div className={styles["movie-card"]} key={movie._id}>
+                <div
+                  className={styles["movie-card"]}
+                  key={movie._id}
+                  onClick={() => {
+                    setSelectedMovie(movie);
+                    setShowDetail(true);
+                  }}
+                >
                   <img
                     src={movie.poster}
                     alt={movie.title}
@@ -56,7 +78,8 @@ const FavoriteMovies = ({ userId, limit }) => {
                     <p className={styles["movie-plot"]}>{movie.plot}</p>
                     <button
                       className={styles["love-button"]}
-                      onClick={() => {
+                      onClick={(e) => {
+                        e.stopPropagation(); // Prevent opening detail popup
                         setSelectedMovieId(movie._id);
                         setShowConfirm(true);
                       }}
@@ -89,7 +112,6 @@ const FavoriteMovies = ({ userId, limit }) => {
                           { method: "DELETE" }
                         );
                         if (response.ok) {
-                          // Optional: refresh movie list
                           setMovies(
                             movies.filter(
                               (movie) => movie._id !== selectedMovieId
@@ -102,7 +124,9 @@ const FavoriteMovies = ({ userId, limit }) => {
                         alert("An error occurred.");
                         console.error(error);
                       } finally {
+                        // ✅ Close both dialogs
                         setShowConfirm(false);
+                        setShowDetail(false);
                         setSelectedMovieId(null);
                       }
                     }}
@@ -112,12 +136,66 @@ const FavoriteMovies = ({ userId, limit }) => {
                   <button
                     className={styles["confirm-no"]}
                     onClick={() => {
+                      // ✅ Just close confirm, keep detail open
                       setShowConfirm(false);
                       setSelectedMovieId(null);
                     }}
                   >
                     No
                   </button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {showDetail && selectedMovie && (
+            <div
+              className={styles["detail-overlay"]}
+              onClick={() => setShowDetail(false)}
+            >
+              <div
+                className={styles["detail-modal"]}
+                onClick={(e) => e.stopPropagation()}
+              >
+                <img
+                  src={selectedMovie.poster}
+                  alt={selectedMovie.title}
+                  className={styles["detail-poster"]}
+                />
+
+                <div className={styles["detail-info"]}>
+                  <h2 className={styles["detail-title"]}>
+                    {selectedMovie.title}
+                  </h2>
+
+                  <p className={styles["detail-label"]}>
+                    <strong>Description:</strong>
+                  </p>
+                  <p className={styles["detail-plot"]}>{selectedMovie.plot}</p>
+
+                  <div className={styles["detail-bottom"]}>
+                    <div className={styles["detail-left"]}>
+                      <p>
+                        <strong>Year:</strong> {selectedMovie.year}
+                      </p>
+                      <p>
+                        <strong>Genre:</strong> {selectedMovie.genre}
+                      </p>
+                    </div>
+
+                    <div className={styles["detail-right"]}>
+                      <button
+                        className={styles["love-button"]}
+                        onClick={(e) => {
+                          e.stopPropagation(); // prevent background click
+                          setSelectedMovieId(selectedMovie._id);
+                          setShowConfirm(true); // open confirm modal
+                        }}
+                      >
+                        ❤️
+                      </button>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

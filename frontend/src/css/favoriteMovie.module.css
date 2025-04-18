@@ -61,6 +61,18 @@ body {
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     width: fit-content;
     max-width: 100%;
+    transition: transform 0.2s ease, background-color 0.3s ease;
+    cursor: pointer; /* make it feel clickable */
+}
+
+.movie-card:hover {
+  transform: scale(1.02);
+  background-color: #eaeaea; /* light background change */
+}
+.movie-card:hover {
+  transform: scale(1.02);
+  background-color: #eaeaea;
+  box-shadow: 0 4px 12px rgba(255, 87, 87, 0.3);
 }
 
 .movie-poster {
@@ -113,16 +125,16 @@ body {
 
   /*//////////////////////// Confirmation Dialog ////////////////////////*/
   .confirm-overlay {
-    position: fixed;
+    position: fixed; /* Ensure it's on top of everything */
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent backdrop */
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 999;
+    z-index: 2000; 
   }
   
   .confirm-modal {
@@ -131,6 +143,7 @@ body {
     border-radius: 10px;
     text-align: center;
     width: 300px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   }
   
   .confirm-modal h2 {
@@ -161,6 +174,118 @@ body {
   .confirm-no {
     background-color: #ccc;
     color: black;
+  }
+  
+  /* //////Movie Detail Dialog ///////// */
+  .detail-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000; 
+  }
+
+  .detail-modal {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 500px;
+    max-height: 80vh; 
+    text-align: left;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .detail-poster {
+    width: 70%;         /* Reduced from 100% */
+    max-width: 300px;   /* Optional: add a cap for large screens */
+    margin: 0 auto;     /* Center the poster horizontally */
+    border-radius: 8px;
+    object-fit: cover;
+  }
+  
+  .detail-info {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .detail-title {
+    font-size: 20px;
+    font-weight: bold;
+    margin: 8px 0 4px;
+  }
+  .detail-label {
+    margin: 0;
+    font-size: 14px;
+    font-weight: bold;
+  }
+  
+  .detail-plot {
+    font-style: italic;
+    font-size: 13.5px;
+    margin-top: 2px;
+    margin-bottom: 4px;
+    line-height: 1.6;
+    color: #333;
+    max-width: 100%;
+  }
+  
+  .detail-bottom {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 12px;
+  }
+  
+  .detail-left {
+    flex: 1;
+    margin: 1px 0;
+    font-size: 14px;
+    line-height: 1.4;
+  }
+  
+  .detail-right {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-end;
+    padding-left: 15px;
+  }
+  .detail-body {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+  }
+  
+  .detail-text {
+    flex: 3;
+    font-size: 15px;
+  }
+  
+  .detail-text p {
+    margin: 6px 0;
+  }
+  
+  .detail-plot {
+    font-style: italic;
+    font-size: 14px;
+    margin-top: 4px;
+    line-height: 1.4;
+  }
+  
+  .detail-actions {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-start;
   }
   
   
