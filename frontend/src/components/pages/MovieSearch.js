@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import styles from "../../css/favoriteMovie.module.css"; // Uses your existing CSS file
-import searchTMDb from "../../utilities/searchTMDb"; // Adjust path based on where you define the function
+import styles from "../../css/favoriteMovie.module.css";
+import searchTMDb from "../../utilities/searchTMDb";
+import FavoriteButton from "../buttons/FavoriteButton";
 
 const MovieSearch = () => {
   const [query, setQuery] = useState("");
@@ -81,13 +82,12 @@ const MovieSearch = () => {
                       ? movie.overview.split(" ").slice(0, 25).join(" ") + (movie.overview.split(" ").length > 50 ? "..." : "")
                       : "No description available."}
                   </p>
-                  <button className={styles["love-button"]}>+</button>
+                  <FavoriteButton movie={movie} /> {/* Use FavoriteButton component here */}
                 </div>
               </div>
             ))}
           </div>
         )}
-
       </div>
     </div>
   );
