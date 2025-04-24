@@ -31,12 +31,23 @@ export default function Navbar() {
   return (
     <ReactNavbar bg="#3a0d0d" variant="dark">
       <Container>
-        <Nav className="me-auto">
-          <Nav.Link as={Link} to="/MovieSearch" style={{ color: "white" }}>
-            Movie Search
-          </Nav.Link>
-          <Nav.Link as={Link} to="/favoriteMovie" style={{ color: "white" }}>
-            Favorite Movie
+        <Nav className="ms-0">
+          <Nav.Link
+            as={Link}
+            to="/MovieSearch"
+            style={{
+              color: "white",
+              fontWeight: "bold",
+              fontSize: "22px",
+              display: "flex",
+              alignItems: "center",
+              gap: "6px",
+              textDecoration: "none",
+              paddingLeft: "0px",
+              marginLeft: "0px",
+            }}
+          >
+            🏠 Home
           </Nav.Link>
         </Nav>
 
