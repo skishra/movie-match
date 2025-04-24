@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import styles from "../../css/favoriteMovie.module.css";
+import { useNavigate } from "react-router-dom";
 
 const FavoriteMovies = ({ userId, limit }) => {
   const [movies, setMovies] = useState([]);
@@ -9,6 +10,7 @@ const FavoriteMovies = ({ userId, limit }) => {
   const [selectedMovieId, setSelectedMovieId] = useState(null);
   const [showDetail, setShowDetail] = useState(false);
   const [selectedMovie, setSelectedMovie] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchFavoriteMovies = async () => {
@@ -54,7 +56,23 @@ const FavoriteMovies = ({ userId, limit }) => {
     <div className="result">
       <div className={styles["page-wrapper"]}>
         <div className={styles["content-inner"]}>
-          <h1 className={styles["title"]}>My Loves . . .</h1>
+          <div className={styles["top-right-button"]}>
+            {/* <button onClick={() => navigate("/topPickMovie")}>
+              🎬 Pick a Movie
+            </button> */}
+          </div>
+          <div className={styles["header-row"]}>
+            <h1 className={styles["title"]}>My Loves . . .</h1>
+            <button
+              className={styles["top-action-button"]}
+              onClick={() => {
+                navigate("/topPickMovie");
+              }}
+            >
+              🎬 Pick a Movie
+            </button>
+          </div>
+
           {loading ? (
             <p>Loading favorites...</p>
           ) : movies.length > 0 ? (
@@ -177,9 +195,6 @@ const FavoriteMovies = ({ userId, limit }) => {
                     <div className={styles["detail-left"]}>
                       <p>
                         <strong>Year:</strong> {selectedMovie.year}
-                      </p>
-                      <p>
-                        <strong>Genre:</strong> {selectedMovie.genre}
                       </p>
                     </div>
 
