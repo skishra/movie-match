@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import jwt_decode from "jwt-decode";
 import getUserInfo from "../../utilities/decodeJwt";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
@@ -11,12 +12,13 @@ const SECONDARY_COLOR = "#3a0d0d";
 const UpdateProfile = () => {
   const navigate = useNavigate();
   const [profile, setProfile] = useState({ username: "", email: "", password: "" });
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
   useEffect(() => {
     const user = getUserInfo();
-    if (user) {
+    if (user && user.username && user.email) {
       setProfile({ username: user.username, email: user.email, password: "" });
     } else {
       navigate("/login");
@@ -30,23 +32,60 @@ const UpdateProfile = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`/api/users/${getUserInfo().id}`, profile);
+      const user = getUserInfo();
+
+      if (!user?.id) {
+        setError("User ID not found. Please login again.");
+        return;
+      }
+
+      const updateData = {
+        userId: user.id,
+        email: profile.email,
+      };
+
+      if (profile.password.trim() !== "") {
+        updateData.password = profile.password;
+      }
+
+      console.log("Sending updateData:", updateData);
+
+      const response = await axios.post(
+        "http://localhost:8081/user/editUser",
+        updateData,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        }
+      );
+
+      if (response.data.accessToken) {
+        localStorage.setItem("accessToken", response.data.accessToken);
+
+        const decoded = jwt_decode(response.data.accessToken);
+        setProfile({ username: decoded.username, email: decoded.email, password: "" });
+      }
+
       setSuccess("Profile updated successfully.");
       setError("");
+
       setTimeout(() => {
         navigate("/profile");
       }, 1500);
     } catch (err) {
+      console.error(err);
       setError("Failed to update profile.");
       setSuccess("");
     }
   };
 
-  let labelStyling = {
+  const labelStyling = {
     color: PRIMARY_COLOR,
     fontWeight: "bold",
   };
-  let buttonStyling = {
+
+  const buttonStyling = {
     background: PRIMARY_COLOR,
     borderStyle: "none",
     color: SECONDARY_COLOR,
@@ -68,8 +107,8 @@ const UpdateProfile = () => {
                   type="text"
                   name="username"
                   value={profile.username}
-                  onChange={handleChange}
-                  placeholder="Enter new username"
+                  disabled
+                  placeholder="Username cannot be changed"
                 />
               </Form.Group>
 
@@ -81,24 +120,33 @@ const UpdateProfile = () => {
                   value={profile.email}
                   onChange={handleChange}
                   placeholder="Enter new email"
+                  required
                 />
               </Form.Group>
 
               <Form.Group className="mb-3" controlId="formPassword">
                 <Form.Label style={labelStyling}>New Password</Form.Label>
                 <Form.Control
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   name="password"
                   value={profile.password}
                   onChange={handleChange}
-                  placeholder="Enter new password"
+                  placeholder="Enter new password (optional)"
                 />
               </Form.Group>
 
-              {error && <div style={{ color: "red" }}>{error}</div>}
-              {success && <div style={{ color: "limegreen" }}>{success}</div>}
+              <Form.Check
+                type="checkbox"
+                id="showPasswordToggle" // Unique ID
+                label="Show Password"
+                onChange={() => setShowPassword(!showPassword)}
+                style={{ color: PRIMARY_COLOR, marginTop: "5px" }}
+              />
 
-              <Button type="submit" style={buttonStyling} className="mt-3">
+              {error && <div style={{ color: "red", marginTop: "10px" }}>{error}</div>}
+              {success && <div style={{ color: "limegreen", marginTop: "10px" }}>{success}</div>}
+
+              <Button type="submit" style={buttonStyling} className="mt-3 w-100">
                 Save Changes
               </Button>
             </Form>

@@ -1,46 +1,67 @@
 const express = require("express");
 const router = express.Router();
-const z = require('zod')
 const bcrypt = require("bcrypt");
-const newUserModel = require('../models/userModel')
-const { newUserValidation } = require('../models/userValidator');
-const { generateAccessToken } = require('../utilities/generateToken');
+const newUserModel = require("../models/userModel");
+const { generateAccessToken } = require("../utilities/generateToken");
 
-router.post('/editUser', async (req, res) =>
-{
-    // validate new user information
-    const { error } = newUserValidation(req.body);
-    if (error) return res.status(400).send({ message: error.errors[0].message });
+// Using zod for validation
+const z = require("zod");
 
-    // store new user information
-    const {userId, username, email, password} = req.body
+const updateUserSchema = z.object({
+  userId: z.string(),
+  email: z.string().email(),
+  password: z.string().optional(),
+});
 
-    // check if username is available
-    const user = await newUserModel.findOne({ username: username })
-    if (user) userIdReg = JSON.stringify(user._id).replace(/["]+/g, '')
-    if (user && userIdReg !== userId) return res.status(409).send({ message: "Username is taken, pick another" })
-
-    // generates the hash
-    const generateHash = await bcrypt.genSalt(Number(10))
-
-    // parse the generated hash into the password
-    const hashPassword = await bcrypt.hash(password, generateHash)
-
-    // find and update user using stored information
-    newUserModel.findByIdAndUpdate(userId, {
-        username : username, 
-        email : email, 
-        password : hashPassword
-    } ,function (err, user) {
-    if (err){
-        console.log(err);
-    } else {
-        // create and send new access token to local storage
-        const accessToken = generateAccessToken(user._id, email, username, hashPassword)  
-        res.header('Authorization', accessToken).send({ accessToken: accessToken })
+router.post("/editUser", async (req, res) => {
+  try {
+    // Validate input
+    const parsed = updateUserSchema.safeParse(req.body);
+    if (!parsed.success) {
+      return res.status(400).send({ message: parsed.error.errors[0].message });
     }
-    });
 
-})
+    const { userId, email, password } = parsed.data;
+
+    // Find user by ID
+    const existingUser = await newUserModel.findById(userId);
+    if (!existingUser) {
+      return res.status(404).send({ message: "User not found." });
+    }
+
+    // Prepare updated fields
+    const updatedFields = { email };
+
+    if (password && password.trim() !== "") {
+      const salt = await bcrypt.genSalt(10);
+      const hashedPassword = await bcrypt.hash(password, salt);
+      updatedFields.password = hashedPassword;
+    }
+
+    // Update user
+    const updatedUser = await newUserModel.findByIdAndUpdate(
+      userId,
+      updatedFields,
+      { new: true }
+    );
+
+    if (!updatedUser) {
+      return res.status(500).send({ message: "Failed to update user." });
+    }
+
+    // Generate new token
+    const accessToken = generateAccessToken(
+      updatedUser._id,
+      updatedUser.email,
+      updatedUser.username,
+      updatedUser.password
+    );
+
+    res.header("Authorization", accessToken).send({ accessToken });
+  } catch (err) {
+    console.error("Error in /editUser:", err);
+    res.status(500).send({ message: "Internal server error." });
+  }
+});
 
 module.exports = router;
