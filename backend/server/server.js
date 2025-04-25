@@ -14,6 +14,7 @@ const deleteFavoriteMoviesById = require("./routes/favoriteMovieDeleteMovieById"
 const updateFavoriteMovie = require("./routes/FavoriteMovieUpdateMovie");
 const addGenre = require("./routes/genresAddGenre");
 const getAllGenres = require("./routes/genresGetAll");
+const deleteUserById = require("./routes/userDeleteById");
 
 require("dotenv").config();
 const SERVER_PORT = 8081;
@@ -33,6 +34,7 @@ app.use("/favoriteMovies", deleteFavoriteMoviesById);
 app.use("/favoriteMovies", updateFavoriteMovie);
 app.use("/genres", addGenre);
 app.use("/genres", getAllGenres);
+app.use("/user", deleteUserById);
 
 app.listen(SERVER_PORT, (req, res) => {
   console.log(

@@ -1,0 +1,41 @@
+// const express = require("express");
+// const router = express.Router();
+// const User = require("../models/userModel"); // adjust the path if needed
+
+// // Delete user by ID
+// router.delete("/deleteUserById/:id", async (req, res) => {
+//   try {
+//     const userId = req.params.id;
+//     const deletedUser = await User.findByIdAndDelete(userId);
+//     if (!deletedUser) {
+//       return res.status(404).json({ message: "User not found" });
+//     }
+//     res.json({ message: "User deleted successfully" });
+//   } catch (err) {
+//     console.error("Error deleting user:", err);
+//     res.status(500).json({ message: "Server error" });
+//   }
+// });
+
+// module.exports = router;
+const express = require("express");
+const router = express.Router();
+const newUserModel = require("../models/userModel");
+
+router.delete("/deleteUserById/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const deletedUser = await newUserModel.findByIdAndDelete(id);
+
+    if (!deletedUser) {
+      return res.status(404).json({ message: "User not found." });
+    }
+
+    res.status(200).json({ message: "User deleted successfully." });
+  } catch (error) {
+    console.error("Error deleting user:", error);
+    res.status(500).json({ message: "Internal server error." });
+  }
+});
+
+module.exports = router;

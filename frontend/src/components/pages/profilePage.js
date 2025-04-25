@@ -24,13 +24,14 @@ const ProfilePage = () => {
 
   const handleDelete = () => {
     if (window.confirm("Are you sure you want to delete your profile?")) {
-      // Call API to delete profile
+      console.log("Deleting user with ID:", profile.id); // ADD THIS
       axios
-        .delete(`/api/users/${profile.id}`)
+        .delete(`http://localhost:8081/user/deleteUserById/${profile.id}`)
+        // .delete(`/user/deleteUserById/${profile.id}`)
         .then(() => {
           alert("Profile deleted successfully.");
           localStorage.removeItem("accessToken");
-          navigate("/signup"); // Redirect to signup after deletion
+          navigate("/MovieSearch"); // Go back to MovieSearch page
         })
         .catch((err) => {
           console.error("Error deleting profile:", err);
@@ -38,6 +39,23 @@ const ProfilePage = () => {
         });
     }
   };
+
+  // const handleDelete = () => {
+  // if (window.confirm("Are you sure you want to delete your profile?")) {
+  //   // Call API to delete profile
+  //   axios
+  //     .delete(`/user/deleteUserById/${profile._id}`)
+  //     .then(() => {
+  //       alert("Profile deleted successfully.");
+  //       localStorage.removeItem("accessToken");
+  //       navigate("/signup"); // Redirect to signup after deletion
+  //     })
+  //     .catch((err) => {
+  //       console.error("Error deleting profile:", err);
+  //       alert("Failed to delete profile. Please try again.");
+  //     });
+  //   }
+  // };
 
   if (!profile) {
     return <p>Loading profile...</p>;
@@ -69,8 +87,8 @@ const ProfilePage = () => {
       <button
         onClick={handleDelete}
         style={{
-          backgroundColor: "red",
-          color: "white",
+          backgroundColor: "#3a0d0d",
+          color: "grey",
           padding: "10px 20px",
           borderRadius: "5px",
           border: "none",
